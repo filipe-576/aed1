@@ -19,7 +19,6 @@ int main(){
     printf("%d %d", ans[0], ans[1]);
 
 
-
     return 0;
 }
 
