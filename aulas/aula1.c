@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TAM 300
+#define MAX_SIZE 1000
+#define MAX_NAME 50
 
 void addName(char *namesList);
 void removeName(char *namesList);
@@ -11,7 +12,8 @@ int menu();
 
 int main(){
     int option;
-    char namesList[TAM];
+    char namesList[MAX_SIZE];
+
     namesList[0] = '\0';
     
     for(;;){
@@ -34,6 +36,7 @@ int main(){
             case 4:
                 exit(1);
                 break;
+                
 
         }
     }
@@ -58,29 +61,28 @@ int menu(){
 }
 
 void addName(char *namesList){
-    char target[50];
+    char name[MAX_NAME];
     int i, j;
 
     printf("Digite o nome a ser adicionado:\n");
     getchar();
-    readString(target);
+    readString(name);
 
-    // printf("\nname: %s", target);
+    if(strlen(name) < 1)
+        return;
+        
+    strcat(name, ",");
+    strcat(namesList, name);
 
-    for(i = 0; namesList[i] != '\0'; i++);
-    
-    for(j = 0; target[j] != '\0' && i < TAM; j++, i++){
-        namesList[i] = target[j];
-    }
-    namesList[i++] = ',';
-    namesList[i] = '\0';
-
-    // printf("\nnamesList: %s\n", namesList);
 
 }
 
 void listNames(char *namesList){
     int i;
+    if(namesList[0] == '\0'){
+        printf("Lista vazia!");
+        return;
+    }
     printf("=======================");
     // printf("\n%s\n", namesList);
     printf("\nNomes:\n");
@@ -99,11 +101,18 @@ void removeName(char *namesList){
     int firstLetter = 0;
     int lastLetter = 0;
     char target[50];
-    char namesListTemp[TAM];
+    char namesListTemp[MAX_SIZE];
+
+    if(namesList[0] == '\0'){
+        printf("Lista vazia!");
+        return;
+    }
 
     printf("Digite o nome a ser removido:\n");
     getchar();
     readString(target);
+    if(strlen(target) < 1)
+        return;
     // printf("\n%s", target);
 
     for(i = 0; namesList[i] != '\0'; i++){
