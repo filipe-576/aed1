@@ -1,36 +1,55 @@
 #include <stdio.h>
+#include <string.h> 
 
-int isPalindrome(int x);
+#define MAX_DIGITS 11 
 
+int isPalindrome(int numero);
 
-int main(){
-    int res = isPalindrome(1005001);
+int main() {
+    int resultado;
+    int numero;
 
-    printf("\nres:%d", res);
-    
+    printf("Digite um número para verificar se é palíndromo: ");
+    scanf("%d", &numero);
+
+    resultado = isPalindrome(numero);
+
+    if (resultado == 1) {
+        printf("\nO número %d é um palíndromo!\n", numero);
+    } else {
+        printf("\nO número %d não é um palíndromo.\n", numero);
+    }
+
     return 0;
 }
 
-int isPalindrome(int x){
-    if (x < 0)
-        return 0;
-    if(x < 10)
-        return 1;
-    char digits[11];
-    int left = 0, right, half;
+int isPalindrome(int numero) {
+    char digitos[MAX_DIGITS];
+    int esquerda = 0;
+    int direita;
+    int metade;
 
-    snprintf(digits, 11, "%d", x);
 
-    
-    for(right = 0; digits[right+1] != '\0'; right++)
-    
-    half = (right / 2);
+    if (numero < 0) {
+        return 0; 
+    }
+    if (numero < 10) {
+        return 1; 
+    }
 
-    for(; left <= half; left++, right--)
-        if(digits[left] != digits[right])
+
+    snprintf(digitos, MAX_DIGITS, "%d", numero);
+
+
+    for (direita = 0; digitos[direita + 1] != '\0'; direita++);
+
+    metade = direita / 2;
+
+    for (; esquerda <= metade; esquerda++, direita--) {
+        if (digitos[esquerda] != digitos[direita]) {
             return 0;
-    
+        }
+    }
+
     return 1;
-
-
 }
