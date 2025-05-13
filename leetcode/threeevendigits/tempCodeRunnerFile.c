@@ -1,0 +1,2 @@
+
+            digits[++k] = digits[i];
