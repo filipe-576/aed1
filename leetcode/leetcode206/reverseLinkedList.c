@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -14,7 +16,7 @@ struct ListNode* reverseList(struct ListNode* head) {
 
     node* answer = NULL;
     node* nextNode;
-    node *current = head;
+    node* current = head;
 
     while( current != NULL ){
         nextNode = current->next;
