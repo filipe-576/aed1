@@ -5,37 +5,53 @@
  *     struct ListNode *next;
  * };
  */
+
+// void printl(struct ListNode* head){
+//     if( head == NULL){
+//         printf("NULL\n");
+//         return;
+//     }
+//     for( struct ListNode* current = head; current != NULL; current = current->next ){
+//         printf("%d -> ", current->val);
+//     }
+//     printf("NULL\n");
+// }
+
 struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
     typedef struct ListNode node;
-    if(head->next == NULL){
+    if ( left == right ){
         return head;
     }
 
-    node* preLeft;
-    for( preLeft = head; preLeft->next != NULL && preLeft->next->val != left; preLeft = preLeft->next); // encontra nodo antes do left
+    node *preLeft = head;
+    node *firstReversed;
+
+    if( left == 1 ){
+        preLeft = NULL; 
+        firstReversed = head;
+    }
+    else{
+        for( int i = left - 2; i > 0; preLeft = preLeft->next, i-- );
+        firstReversed = preLeft->next;
+    }
     
-    if( preLeft->next == NULL ){
-        return head;
-    }
-    node* current = preLeft->next;
-    node* rightNode = current->next;
-    node* nextNode;
-    node* answer = NULL;
-    // printf("%d ", current->val);
+    node *current = firstReversed;
+    node *nextNode = current;
+    node *reversed = NULL;
 
-    while( current->val != right ){
-        // printf("%d ", current->val);
-        nextNode = current->next;
-        current->next = answer;
-        answer = current;
+    for( int i = right - left; i >= 0; i-- ){
         current = nextNode;
+        nextNode = nextNode->next;
+        current->next = reversed;
+        reversed = current;
     }
 
-    printf("%d\n", nextNode->next->val);
-    printf("%d", rightNode->val);
-    rightNode->next->next = nextNode->next;
-    current->next = answer;
-    preLeft->next = current;
+    firstReversed->next = nextNode;
 
-    return preLeft;
+    if( preLeft == NULL ){
+        return reversed;
+    }
+
+    preLeft->next = reversed;
+    return head;
 }
