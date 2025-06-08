@@ -16,7 +16,6 @@ void removePerson(void **pBuffer, int *i, int *qt, char* tempS, void *agenda);
 int main(){
 
     void *pBuffer = malloc( sizeof(int) * 3 + sizeof(char) * NAME_SIZE);
-    // printf("%p\n", pBuffer);
 
     int *menu = ( int* ) pBuffer;
     int *qt = ( int* ) pBuffer + 1;
@@ -24,6 +23,8 @@ int main(){
     char *tempS = ( char* ) pBuffer + (sizeof(int) * 3);
     void *agenda = pBuffer + (sizeof(int) * 3) + NAME_SIZE;
     *qt = 0;
+
+    // printf("%p\n%p\n%p\n%p\n%p\n%p", pBuffer, menu, qt, i, tempS, agenda);
 
     while( 1 ){
         showMenu(menu);
@@ -124,9 +125,9 @@ void findPerson(void *pBuffer, int *i, int *qt, char *tempS, void *agenda){
     printf("========================\n");
     for( *i = 0; *i < *qt; *i += 1 ){
         if(strcmp(agenda + ( *i * (PERSON_SIZE)), tempS) == 0){
-            printf("Nome: %s\n", agenda + ( *i * (PERSON_SIZE)) );
-            printf("Idade: %d\n", *( int* ) ( agenda + ( *i * (PERSON_SIZE)) + NAME_SIZE ) );
-            printf("Email: %s\n", agenda + ( *i * (PERSON_SIZE)) + NAME_SIZE + sizeof(int));
+            printf("Nome: %s\n", ( char* ) ( agenda + ( *i * (PERSON_SIZE) ) ) );
+            printf("Idade: %d\n", *( int* ) ( agenda + ( *i * (PERSON_SIZE) ) + NAME_SIZE ) );
+            printf("Email: %s\n", ( char* ) ( agenda + ( *i * (PERSON_SIZE) ) + NAME_SIZE + sizeof(int) ) );
             printf("========================\n");
             return;
         }
