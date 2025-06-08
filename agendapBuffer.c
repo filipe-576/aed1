@@ -58,8 +58,7 @@ int main(){
 void showMenu(int *menu){
     
     do{
-        // system("cls");
-        printf("==========MENU==========\n");
+        printf("\n==========MENU==========\n");
         printf("1 - Adicionar Pessoa\n");
         printf("2 - Remover Pessoa\n");
         printf("3 - Buscar Pessoa\n");
@@ -80,21 +79,19 @@ void addPerson(void **pBuffer, int *qt, void *agenda){
     int *age = ( int* ) ( newPerson + NAME_SIZE );
     char *email = ( char* ) ( newPerson + NAME_SIZE + sizeof(int) );
 
-
     // printf("%p\n%p\n%p\n%p", newPerson, name, age, email);
-
+    printf("Nome: ");
     getchar();
     fgets(name, NAME_SIZE, stdin);
+    printf("\nIdade: ");
     scanf("%d", age);
+    printf("\nEmail: ");
     getchar();
-    fgets(email, EMAIL_SIZE, stdin);
+    fgets(email, EMAIL_SIZE, stdin);  
 
     name[strlen(name) - 1] = '\0'; 
     email[strlen(email) - 1] = '\0';
     
-    // printf("%s\n", name);
-    // printf("%d\n", *age);
-    // printf("%s\n", email);
 }
 
 void listAll(void *pBuffer, int *i, int *qt, void *agenda){
@@ -105,16 +102,18 @@ void listAll(void *pBuffer, int *i, int *qt, void *agenda){
 
     printf("========CONTATOS========\n");
     for( *i = 0; *i < *qt; *i += 1 ){
-        printf("Nome: %s\n", agenda + ( *i * (PERSON_SIZE)) );
-        printf("Idade: %d\n", *( int* ) ( agenda + ( *i * (PERSON_SIZE)) + NAME_SIZE ) );
-        printf("Email: %s\n", agenda + ( *i * (PERSON_SIZE)) + NAME_SIZE + sizeof(int));
+        printf("Nome: %s\n", ( char* ) ( agenda + ( *i * (PERSON_SIZE) ) ) );
+        printf("Idade: %d\n", *( int* ) ( agenda + ( *i * (PERSON_SIZE) ) + NAME_SIZE ) );
+        printf("Email: %s\n", ( char* ) ( agenda + ( *i * (PERSON_SIZE) ) + NAME_SIZE + sizeof(int) ) );
         printf("========================\n");
     }
 }
 
 void findPerson(void *pBuffer, int *i, int *qt, char *tempS, void *agenda){
     if( !*qt ){
+        printf("========================\n");
         printf("LISTA VAZIA\n");
+        printf("========================\n");
         return;
     }
 
@@ -139,26 +138,31 @@ void findPerson(void *pBuffer, int *i, int *qt, char *tempS, void *agenda){
 
 void removePerson(void **pBuffer, int *i, int *qt, char *tempS, void *agenda){
     if( !*qt ){
+        printf("========================\n");
         printf("LISTA VAZIA\n");
+        printf("========================\n");
         return;
     }
+    printf("Nome: ");
     getchar();
     fgets(tempS, NAME_SIZE, stdin);
     tempS[strlen(tempS)-1] = '\0';
 
+    printf("========================\n");
     for( *i = 0; *i < *qt; *i += 1 ){
         if(strcmp(agenda + ( *i * (PERSON_SIZE)), tempS) == 0){
-
+            
             memcpy(agenda + ( *i * (PERSON_SIZE)), agenda + ( (*i + 1) * (PERSON_SIZE)), ( *qt - *i - 1 ) * PERSON_SIZE);
             
             *qt -= 1;
             *pBuffer = realloc( *pBuffer, AGENDA + ( *qt * (PERSON_SIZE) ) );
+            printf("Contato removido\n");
+            printf("========================\n");
 
             return;
         }
     }
 
-    printf("========================\n");
     printf("Contato não encontrado\n");
     printf("========================\n");
 }
