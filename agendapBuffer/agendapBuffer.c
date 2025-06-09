@@ -97,7 +97,9 @@ void addPerson(void **pBuffer, int *qt, void *agenda){
 
 void listAll(void *pBuffer, int *i, int *qt, void *agenda){
     if( !*qt ){
+        printf("========================\n");
         printf("LISTA VAZIA\n");
+        printf("========================\n");
         return;
     }
 
