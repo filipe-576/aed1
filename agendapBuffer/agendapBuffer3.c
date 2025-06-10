@@ -2,36 +2,37 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #define STRING_SIZE 20
 #define PERSON_SIZE ( sizeof(char) * STRING_SIZE + sizeof(int) + sizeof(char) * STRING_SIZE )
-#define AGENDA ( sizeof(int) * 3 + sizeof(char) * STRING_SIZE * 2 )
+#define INFO ( sizeof(int) * 4 + STRING_SIZE * 2 )
 
 void showMenu(int *menu);
-void addPerson(void **pBuffer, int **qt, void **agenda);
+void addPerson(void **pBuffer, int **qt, int **tempAge, char **tempS, void **agenda);
 // void listAll(void *pBuffer, int *i, int *qt, void *agenda);
 // void findPerson(void *pBuffer, int *i, int *qt, char* tempS, void *agenda);
 // void removePerson(void **pBuffer, int *i, int *qt, char* tempS, void *agenda);
 
 int main(){
 
-    void *pBuffer = calloc(1, sizeof(int) * 3 + sizeof(char) * STRING_SIZE + 1);
-    
-
+    void *pBuffer = calloc(1, INFO);
+    int *menu = ( int* ) pBuffer;
+    int *qt = ( int* ) pBuffer + 1;
+    int *i = ( int* ) pBuffer + 2;
+    int *tempAge = ( int* ) pBuffer + 3;
+    char *tempS = ( char* ) pBuffer + (sizeof(int) * 4);
+    void *agenda = pBuffer + INFO;
 
     while( 1 ){
-        int *menu = ( int* ) pBuffer;
-        int *qt = ( int* ) pBuffer + 1;
-        int *i = ( int* ) pBuffer + 2;
-        char *tempS = ( char* ) pBuffer + (sizeof(int) * 3);
-        void *agenda = pBuffer + (sizeof(int) * 3) + sizeof(char) * STRING_SIZE;
         
-        // printf("buffer:%p\nmenu:%p\nqt:%p\ni:%p\ntempS:%p\nagenda:%p\n", pBuffer, menu, qt, i, tempS, agenda);
+        printf("buffer:%p\nmenu:%p\nqt:%p\ni:%p\ntempAge:%p\ntempS:%p\nagenda:%p\n", pBuffer, menu, qt, i, tempAge, tempS, agenda);
+        printf("%s\n%s\n%d\n", tempS, tempS + STRING_SIZE, *tempAge);
         showMenu(menu);
         // system("cls");
 
         switch( *menu ){
             case 1:
-                addPerson(&pBuffer, &qt, &agenda);
+                addPerson(&pBuffer, &qt, &tempAge, &tempS, &agenda);
                 break;
             // case 2:
             //     removePerson(&pBuffer, i, qt, tempS, agenda);
@@ -48,6 +49,13 @@ int main(){
                 free(pBuffer);
                 exit(0);
         }
+
+        menu = ( int* ) pBuffer;
+        qt = ( int* ) pBuffer + 1;
+        i = ( int* ) pBuffer + 2;
+        tempAge = ( int* ) pBuffer + 3;
+        tempS = ( char* ) pBuffer + (sizeof(int) * 4);
+        agenda = pBuffer + INFO;
 
     }
 
@@ -68,33 +76,29 @@ void showMenu(int *menu){
     } while( *menu < 1 || *menu > 5 );
 }
 
-void addPerson(void **pBuffer, int **qt, void **agenda){
+void addPerson(void **pBuffer, int **qt, int **tempAge, char **tempS, void **agenda){
     **qt += 1;
 
-    void *tempBuffer = realloc(*pBuffer, AGENDA + (**qt * PERSON_SIZE));
-    *pBuffer = tempBuffer;
-    *qt = (int*)(tempBuffer) + 1;
-    *agenda = tempBuffer + (sizeof(int) * 3) + STRING_SIZE;
-    // printf("buffer depois: %p\n", *pBuffer);
-    // printf("\nqt:%d\n", **qt);
-    void *newPerson = *agenda + ( ( **qt - 1 ) * (PERSON_SIZE));
-    char *name = ( char* ) newPerson;
-    int *age = ( int* ) ( newPerson + STRING_SIZE );
-    char *email = ( char* ) ( newPerson + STRING_SIZE + sizeof(int) );
+    char *tempName = *tempS;
+    char *tempEmail = tempName + STRING_SIZE;
 
-    // printf("%p\n%p\n%p\n%p", newPerson, name, age, email);
+
+    printf("%p\n%p\n%p\n%p", *tempS, tempName, tempEmail, *tempAge);
     printf("Nome: ");
     getchar();
-    fgets(name, STRING_SIZE-1, stdin);
+    fgets(tempName, STRING_SIZE, stdin);
     printf("\nIdade: ");
-    scanf("%d", age);
+    scanf("%d", *tempAge);
     printf("\nEmail: ");
     getchar();
-    fgets(email, STRING_SIZE-1, stdin);  
+    fgets(tempEmail, STRING_SIZE, stdin);  
     
+    // printf("%s\n%s\n%d\n", tempName, tempEmail, **tempAge);
 
-    name[strlen(name) - 1] = '\0'; 
-    email[strlen(email) - 1] = '\0';
+    tempName[strcspn(tempName, "\n")] = '\0';
+    tempEmail[strcspn(tempEmail, "\n")] = '\0';
+
+    
 
 
 }
@@ -160,7 +164,7 @@ void addPerson(void **pBuffer, int **qt, void **agenda){
 //             memcpy(agenda + ( *i * (PERSON_SIZE)), agenda + ( (*i + 1) * (PERSON_SIZE)), ( *qt - *i - 1 ) * PERSON_SIZE);
             
 //             *qt -= 1;
-//             *pBuffer = realloc( *pBuffer, AGENDA + ( *qt * (PERSON_SIZE) ) );
+//             *pBuffer = realloc( *pBuffer, agenda + ( *qt * (PERSON_SIZE) ) );
 //             printf("Contato removido\n");
 //             printf("========================\n");
 
