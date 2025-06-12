@@ -1,3 +1,5 @@
+// VERSÃO ANTERIOR // AGENDAPBUFFER3 É A FINAL
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
