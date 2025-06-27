@@ -9,24 +9,27 @@ typedef struct node {
 } node;
 
 node *createNode(int key);
-void addNode(node *newNode, node **root);
+void addNode(int key, node **root);
+void inorder(node *root);
+void freeTree(node *root);
+void smallestNode(node *root, node **aux);
+void removeNode(node **root, int key);
 
 
 int main(){
-    node *root = ( node* ) malloc(sizeof(node));
-    root->key = 10;
-    root->left = NULL;
-    root->right = NULL;
-    node *nodeA = createNode(5);
-    node *nodeB = createNode(12);
-    node *nodeC = createNode(11);
+    node *root = createNode(10);
     // printf("%d", nodeA->key);
+    int nums[9] = {8, 22, 5, 9, 13, 30, 1, 7, 25};
 
-    addNode(nodeA, &root);
-    addNode(nodeB, &root);
-    addNode(nodeC, &root);
-    // printf("%d", root->left->key);
-    
+    for( int i = 0; i < 9; i++ ){
+        addNode(nums[i], &root);
+    }
+    inorder(root);
+    printf("\n");
+    removeNode(&root, 10);
+    inorder(root);
+
+    freeTree(root);
 }
 
 node *createNode(int key){
@@ -37,19 +40,82 @@ node *createNode(int key){
     return newNode;
 }
 
-void addNode(node *newNode, node **root){
+void addNode(int key, node **root){
     if( *root == NULL ){
-        *root = newNode;
-        (*root)->left = NULL;
-        (*root)->right = NULL;
+        *root = createNode(key);
 
-    } else if( newNode->key < (*root)->key ){
-        addNode(newNode, &(*root)->left);
-    } else if( newNode->key > (*root)->key ){
-        addNode(newNode, &(*root)->right);
+    } else if( key < (*root)->key ){
+        addNode(key, &(*root)->left);
+    } else if( key > (*root)->key ){
+        addNode(key, &(*root)->right);
     } else{
         printf("Nodo já existe na árvore");
     }
 }
 
-void removeNode()
+void inorder(node *root){
+    if( root->left != NULL ){
+        inorder(root->left);
+    }
+    printf("%d ", root->key);
+    if ( root->right != NULL ){
+        inorder(root->right);
+    }
+}
+
+void freeTree(node *root){
+    if( root->left != NULL ){
+        freeTree(root->left);
+    }
+    if ( root->right != NULL ){
+        freeTree(root->right);
+    }
+    free(root);
+}
+
+void smallestNode(node *root, node **aux){
+    
+    if( (*aux)->left != NULL ){
+        smallestNode(root, &(*aux)->left);
+        return;
+    }
+
+    root->key = (*aux)->key;
+    node *aux2 = *aux;
+    *aux = (*aux)->right;
+    free(aux2);
+
+}
+
+void removeNode(node **root, int key){
+    if( *root == NULL ){
+        printf("Chave não encontrada\n");
+        return;
+    }
+
+    if( key < (*root)->key ){ // busca binaria
+        removeNode(&(*root)->left, key); 
+        return;
+    } else if( key > (*root)->key ){
+        removeNode(&(*root)->right, key);
+        return;
+    } // sai se encontrar
+    
+    
+    if( (*root)->left == NULL && (*root)->right == NULL ){ // se não tem filhos
+        node *aux = *root;
+        free(aux);
+        *root = NULL;
+    } else if( (*root)->left == NULL ){ // se tem só na direita
+        node *aux = *root;
+        *root = (*root)->right;
+        free(aux);
+    } else if ( (*root)->right == NULL ){ // se tem só na esquerda
+        node *aux = *root;
+        *root = (*root)->left;
+        free(aux);
+    } else{ // tem 2 filhos
+        smallestNode(*root, &(*root)->right);
+    }
+
+}
