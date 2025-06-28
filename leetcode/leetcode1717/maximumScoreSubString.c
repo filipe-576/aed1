@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <string.h>
 
 int maximumGain(char* s, int x, int y) {
     
@@ -48,4 +50,11 @@ int maximumGain(char* s, int x, int y) {
     free(stack);
     free(stack2);
     return total;
+}
+
+int main(){
+    char s[12] = "cdbcbbaaabab";
+    maximumGain(s, 4, 5);
+
+    return 0;
 }
