@@ -1,9 +1,10 @@
 #include <stdio.h>
-//  Definition for singly-linked list.
+//  Definition for singly-linked list.  
  struct ListNode {
      int val;
      struct ListNode *next;
  };
+ 
 typedef struct ListNode Node;
 
 void insertSort( Node *head, int val ){
