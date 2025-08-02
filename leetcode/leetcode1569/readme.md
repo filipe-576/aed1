@@ -1,7 +1,8 @@
 # Filipe de Oliveira Soares
 # Turma M1
+# !! Esqueci de mencionar no vídeo, mas como a minha solução é a mesma do editorial não falei diretamente dele.
 
-# 1579. Number of Ways to Reorder Array to Get Same BST
+# 1569. Number of Ways to Reorder Array to Get Same BST
 
 Given an array nums that represents a permutation of integers from 1 to n. We are going to construct a binary search tree (BST) by inserting the elements of nums in order into an initially empty BST. Find the number of different ways to reorder nums so that the constructed BST is identical to that formed from the original array nums.
 
